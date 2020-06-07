@@ -9,7 +9,7 @@ Russian Version (Русская версия):
 3. python3 install.py
 # 📷Скриншот:  
 ![IPScanner](https://github.com/d2nekomet/IPScanner/blob/master/screenshot.png)  
-🤗Автор:
+🤗Автор:  
 Telegram - t.me/os_people  
 Email - regadlyakoechego@tutanota.com  
 
@@ -22,6 +22,6 @@ Project: https://t.me/www_project
 3. python3 install.py
 # 📷Screenshot:  
 ![IPScanner](https://github.com/d2nekomet/IPScanner/blob/master/screenshot.png)  
-🤗Author:
+🤗Author:  
 Telegram - t.me/os_people  
 Email - regadlyakoechego@tutanota.com  
