@@ -22,7 +22,8 @@ My Project: t.me/www_ptoject
 1) Full scan - Full scan site
 2) Base scan - Scan server and delivery of open ports
 3) Port scanner - Output ports open and closed
-4) Ping- Сhecking integrity and quality of the compound''')
+4) Ping - Сhecking integrity and quality of the compound
+5) Domain search - Registered Domain Names Search''')
 	selectMode = input('Выберите нужный вариант: ')
 	print('Выбран режим ' + selectMode + '!')
 	time.sleep(1)
@@ -39,6 +40,26 @@ My Project: t.me/www_ptoject
 	elif selectMode == '4':
 		url = input('Введи IP: ')
 		checkPingType()
+	elif selectMode == '5':
+		url = input('Введите домен: ')
+		regDomainSearch()
+	else:
+		print('Введено не верное значение!')
+		time.sleep(1)
+		startScript()
+
+def regDomainSearch():
+	domainSearchReq = requests.get('https://api.domainsdb.info/v1/domains/search?limit=50&domain='+url,  # get запрос на получене JSON списка доменов
+		headers={'User-Agent':UserAgent().firefox},
+		data={'Accept':'application/json'})
+	domainSearchJson = json.loads(domainSearchReq.text)
+	print('Домены с именем '+url)
+	domainList = 49
+	while domainList > 1:  #цикл для выводы всех полученных результатов
+		print('------\n'+ str(domainSearchJson['domains'][domainList]['domain'] + 
+			'\nДомен умер: ' +domainSearchJson['domains'][domainList]['isDead']))	
+		domainList -= 1
+	print('\nНайденные совпадения выше.')
 
 
 def checkPingType():
@@ -222,4 +243,10 @@ def pingIP():  # кривой,но рабочий Ping. Работает с по
 '\n' + str(pingJson['nodes']['ua2.node.check-host.net'][1]) + ': '+ str(pingJsonResult['ua2.node.check-host.net'])+
 '\n' + str(pingJson['nodes']['us4.node.check-host.net'][1]) + ': '+ str(pingJsonResult['us4.node.check-host.net']))
 	#print(pingReq.text)u
+
+
+
+
+
+
 startScript()
