@@ -23,7 +23,11 @@ My Project: t.me/www_ptoject
 2) Base scan - Scan server and delivery of open ports
 3) Port scanner - Output ports open and closed
 4) Ping - Сhecking integrity and quality of the compound
-5) Domain search - Registered Domain Names Search''')
+5) Domain search - Registered Domain Names Search
+6) HTTP Headers - Shows the http response header
+7) IP to Hostname - Shows the domains linked to the ip
+8) Hostname to IP - shows the IP bound to a domain
+9) MX Lookup - check MX record of domain''')
 	selectMode = input('Выберите нужный вариант: ')
 	print('Выбран режим ' + selectMode + '!')
 	time.sleep(1)
@@ -43,24 +47,86 @@ My Project: t.me/www_ptoject
 	elif selectMode == '5':
 		url = input('Введите домен: ')
 		regDomainSearch()
+	elif selectMode == '6':
+		url = input('Введите домен: ')
+		headReq()
+	elif selectMode == '7':
+		url = input('Введите IP: ')
+		IpToHost()
+	elif selectMode == '8':
+		url = input('Введите домен: ')
+		HostToIp()
+	elif selectMode == '9':
+		url = input('Введите домен: ')
+		MXLookup()	
 	else:
 		print('Введено не верное значение!')
 		time.sleep(1)
 		startScript()
 
-def regDomainSearch():
-	domainSearchReq = requests.get('https://api.domainsdb.info/v1/domains/search?limit=50&domain='+url,  # get запрос на получене JSON списка доменов
-		headers={'User-Agent':UserAgent().firefox},
-		data={'Accept':'application/json'})
-	domainSearchJson = json.loads(domainSearchReq.text)
-	print('Домены с именем '+url)
-	domainList = 49
-	while domainList > 1:  #цикл для выводы всех полученных результатов
-		print('------\n'+ str(domainSearchJson['domains'][domainList]['domain'] + 
-			'\nДомен умер: ' +domainSearchJson['domains'][domainList]['isDead']))	
-		domainList -= 1
-	print('\nНайденные совпадения выше.')
 
+
+def MXLookup():
+	try:
+		MXLookupReq = requests.post('https://codebeautify.org/iptools/mxLookup',
+		headers={'User-Agent': UserAgent().firefox}, 
+		data={'domain':url})
+		MXLookupJson = json.loads(MXLookupReq.text)
+		targetList = 0
+		while True:
+			print('\nHost: '+url + 
+				'\nTarget: ' + MXLookupJson[targetList]['target']+
+				'\nClass: ' + MXLookupJson[targetList]['class']+
+				'\nTTL: ' + str(MXLookupJson[targetList]['ttl'])+
+				'\nType: ' + MXLookupJson[targetList]['type'])
+			targetList += 1
+	except IndexError:
+		print('\nFINISH!')
+
+def HostToIp():
+	HostToIpReq = requests.post('https://codebeautify.org/iptools/hostNameToIP',
+	headers={'User-Agent': UserAgent().firefox}, 
+	data={'domain':url})
+	HostToIPJson = json.loads(HostToIpReq.text)
+	print('\nHost: ' + url + 
+		'\nIP: ' + HostToIPJson[0]['ip'] + 
+		'\nClass: ' + HostToIPJson[0]['class'] +
+		'\nTTL: ' + str(HostToIPJson[0]['ttl']) + 
+		'\nType: ' + HostToIPJson[0]['type'])
+
+
+def IpToHost():
+	ipToHostReq = requests.post('https://codebeautify.org/iptools/ipToHostname',
+	headers={'User-Agent': UserAgent().firefox}, 
+	data={'domain':url})
+	ipToHostJson = json.loads(ipToHostReq.text)
+	print('\nIP: ' + url + 
+		'\nHost: ' + ipToHostJson[0]['hostname'])
+
+def headReq():
+	ipInfoReq = requests.get('https://www.4it.me/api/getavaiblestatus?query=' + url,
+	headers={'User-Agent': UserAgent().firefox}, 
+	data={'query' : str(url)})
+	# ipInfoReq выдает инфу о сервере
+	ipInfoJson = json.loads(ipInfoReq.text)
+	print('\nСервер: ' + str(ipInfoJson['headers']['server']) +
+'\nДата: ' + str(ipInfoJson['headers']['date']) + 
+'\nСоединение: ' + str(ipInfoJson['headers']['connection']))
+
+def regDomainSearch():
+	try:
+		domainSearchReq = requests.get('https://api.domainsdb.info/v1/domains/search?limit=50&domain='+url,  # get запрос на получене JSON списка доменов
+			data={'Accept':'application/json'})
+		domainSearchJson = json.loads(domainSearchReq.text)
+		print('Домены с именем '+url)
+		domainList = 49
+		while domainList > 1:  #цикл для выводы всех полученных результатов
+			print('------\n'+ str(domainSearchJson['domains'][domainList]['domain'] + 
+			'\nДомен умер: ' +domainSearchJson['domains'][domainList]['isDead']))	
+			domainList -= 1
+		print('\nНайденные совпадения выше.')
+	except KeyError:
+		print('\nCовпадений не найдено.')
 
 def checkPingType():
 	global pingType
@@ -137,7 +203,7 @@ def fullScan():
 '\nSOCKS(1080 PORT): ' + portJson['1080'] + 
 '\nVNC(5900 PORT): ' + portJson['5900'] + 
 '\nNewsEDGE(8888 PORT): ' + portJson['8888'])
-#print(r.text)
+	#print(portReq.text)
 	ipInfoJson = json.loads(ipInfoReq.text)
 	print('Данные №3')
 	print('\nСервер: ' + str(ipInfoJson['headers']['server']) +
@@ -243,10 +309,6 @@ def pingIP():  # кривой,но рабочий Ping. Работает с по
 '\n' + str(pingJson['nodes']['ua2.node.check-host.net'][1]) + ': '+ str(pingJsonResult['ua2.node.check-host.net'])+
 '\n' + str(pingJson['nodes']['us4.node.check-host.net'][1]) + ': '+ str(pingJsonResult['us4.node.check-host.net']))
 	#print(pingReq.text)u
-
-
-
-
 
 
 startScript()
