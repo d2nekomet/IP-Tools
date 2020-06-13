@@ -21,6 +21,7 @@ My Project: t.me/www_ptoject
 		os.system('sudo apt install python3-pip -y')
 		os.system('pip3 install requests')
 		os.system('pip3 install fake_useragent')
+		os.system('pip3 install shodan')
 		os.system('clear')
 		print('Чтобы запустить скрипт напишите python3 main.py')
 	elif selectMode == '2':
@@ -28,6 +29,7 @@ My Project: t.me/www_ptoject
 		print('Усстановка началась!')
 		os.system('pip3 install requests')
 		os.system('pip3 install fake_useragent')
+		os.system('pip3 install shodan')
 		os.system('clear')
 		print('Чтобы запустить скрипт напишите python3 main.py')
 	elif selectMode == '3':
@@ -37,10 +39,11 @@ My Project: t.me/www_ptoject
 1) sudo apt install python3-pip
 2) pip3 install requests
 3) pip3 install fake_useragent
-
+4) pip3 install shodan
 Для Termux:
 1) pip3 install requests
 2) pip3 install fake_useragent
+3) pip3 install shodan
 ''')
 
 startInstall()
