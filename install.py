@@ -1,23 +1,27 @@
 import os
 import time
 
+colorNum = ['\033[32m','\033[0m','\033[31m','\033[0m','\033[36m'] # это окраска текста с помощью ANSI
+
 def startInstall():
 	os.system('clear')
-	print(''' 
-╔══╗╔═╦╗╔══╗╔══╗╔══╗╔╗─╔╗─
-╚║║╝║║║║║══╣╚╗╔╝║╔╗║║║─║║─
-╔║║╗║║║║╠══║─║║─║╠╣║║╚╗║╚╗
-╚══╝╚╩═╝╚══╝─╚╝─╚╝╚╝╚═╝╚═╝
+	print(colorNum[4]+''' 
+╭━━┳━╮╱╭┳━━━┳━━━━┳━━━┳╮╱╱╭╮
+╰┫┣┫┃╰╮┃┃╭━╮┃╭╮╭╮┃╭━╮┃┃╱╱┃┃
+╱┃┃┃╭╮╰╯┃╰━━╋╯┃┃╰┫┃╱┃┃┃╱╱┃┃
+╱┃┃┃┃╰╮┃┣━━╮┃╱┃┃╱┃╰━╯┃┃╱╭┫┃╱╭╮
+╭┫┣┫┃╱┃┃┃╰━╯┃╱┃┃╱┃╭━╮┃╰━╯┃╰━╯┃
+╰━━┻╯╱╰━┻━━━╯╱╰╯╱╰╯╱╰┻━━━┻━━━╯
 Author: t.me/os_people
 My Project: t.me/www_ptoject
-Меню:
-1) Debina (Ubuntu) install
-2) Termux install
-3) Ручная установка\n''')
+'''+colorNum[0] +'''Меню:
+'''+colorNum[0]+'''1)'''+colorNum[1]+''' Debina (Ubuntu) install
+'''+colorNum[0]+'''2)'''+colorNum[1]+''' Termux install
+'''+colorNum[0]+'''3)'''+colorNum[1]+''' Ручная установка\n''')
 	selectMode = input('Выберите нужный вариант: ')
 	if selectMode == '1':
 		os.system('clear')
-		print('Усстановка началась!')
+		print('Установка началась!')
 		os.system('sudo apt install python3-pip -y')
 		os.system('pip3 install requests')
 		os.system('pip3 install fake_useragent')
@@ -26,7 +30,7 @@ My Project: t.me/www_ptoject
 		print('Чтобы запустить скрипт напишите python3 main.py')
 	elif selectMode == '2':
 		os.system('clear')
-		print('Усстановка началась!')
+		print('Установка началась!')
 		os.system('pip3 install requests')
 		os.system('pip3 install fake_useragent')
 		os.system('pip3 install shodan')
