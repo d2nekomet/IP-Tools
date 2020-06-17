@@ -6,6 +6,9 @@ import json
 import time
 import json
 import shodan
+from telegraph import Telegraph
+telegraph = Telegraph()
+telegraph.create_account(short_name='Hacker228')
 
 # ---------------------------
 #61TvA2dNwxNxmWziZxKzR5aO9tFD00Nj
@@ -24,7 +27,7 @@ import shodan
 shodanKey = 'PSKINdQe1GyxGgecYz2191H2JoS9qvgD'
 api = shodan.Shodan(shodanKey)
 
-colorNum = ['\033[32m','\033[0m','\033[31m','\033[0m','\036[0m'] # это окраска текста с помощью ANSI
+colorNum = ['\033[32m','\033[0m','\033[31m','\033[0m','\033[36m'] # это окраска текста с помощью ANSI
 def startScript():
 	global url, pingType
 	os.system('clear')
@@ -50,7 +53,8 @@ Author: t.me/os_people\033[0m
  + colorNum[0] +'\n10)'+ colorNum[1] + ' Subdomain finder - find subdomains'
  + colorNum[0] +'\n11)'+ colorNum[1] + ' Traceroute - it makes tracing and displays the results'
  + colorNum[0] +'\n12)'+ colorNum[1] + ' Subnet Lookup - calculates subnet boundaries'
- + colorNum[0] +'\n13)'+ colorNum[1] + ' ExtractLink - download all links from site')
+ + colorNum[0] +'\n13)'+ colorNum[1] + ' ExtractLink - download all links from site'
+ + colorNum[0] +'\n14)'+ colorNum[1] + ' TeleScan - scan and create Telegraph page with info ')
 	print(colorNum[2]+'Other:'+ colorNum[1]
 +colorNum[2]+'\n1a)'+ colorNum[1]+ ' Shodan IP info'
 +colorNum[2]+'\n2a)'+ colorNum[1]+ ' Shodan port scanner'
@@ -100,6 +104,9 @@ Author: t.me/os_people\033[0m
 	elif selectMode == '13':
 		url = input('Введи домен сайта(не URL!): ')
 		linkExtract()
+	elif selectMode == '14':
+		url = input('Введи IP или домен сайта(не URL!): ')
+		teleMode()
 	elif selectMode == '1a':
 		url = input('Введите IP или домен: ')
 		shodanFunc()
@@ -117,6 +124,80 @@ Author: t.me/os_people\033[0m
 		time.sleep(1)
 		startScript()
 
+
+def teleMode():
+	try:
+		baseReq = requests.get('http://ip-api.com/json/' + url + '?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query',headers={'User-Agent': UserAgent().firefox},
+			data = {'fields': 'status,message,continent,continentCode,country,'+
+ 				'countryCode,region,regionName,city,district,zip,lat,lon,'+
+ 				'timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query'})
+		jsonGet = json.loads(baseReq.text)
+		subdomainReq = requests.get('https://api.hackertarget.com/hostsearch/?q='+url)
+		subdomainText = subdomainReq.text
+		subdomainText2 = subdomainText.replace('''
+''','</p>')
+		ip = jsonGet['query']
+		shodanResult = api.host(ip,history=True) # сам запрос
+		response = telegraph.create_page(
+    str(url),
+    html_content=
+    '<p>'+'IP: ' + format(str(shodanResult['ip_str']))+'</p>'+
+    '<p>'+'ASN: ' + format(str(shodanResult['asn']))+'</p>'+
+    '<p>'+'ISP: ' + format(str(shodanResult['isp']))+'</p>'+
+    '<p>'+'Country: ' + format(str(shodanResult['country_name']))+'</p>'+
+    '<p>'+'City: ' + format(str(shodanResult['city']))+'</p>'
+    '<p>'+'Organization: ' + format(str(shodanResult['org']))+'</p>'
+    '<p>'+'Open Ports: ' + format(str(shodanResult['ports']))+'</p>'
+    '<p>'+'Domains: ' + format(str(shodanResult["data"][0]["domains"]))+'</p>'
+    '<p>'+'OS: ' + format(str(shodanResult["data"][0]["os"]))+'</p>'
+    '<p>'+'Vulns: ' + format(str(shodanResult["vulns"]))+'</p>'
+    '<p>'+'Coordinates:'+'</p>'
+    '<p>'+'├ Latitude(Широта): ' + str(jsonGet['lat'])+'</p>'
+    '<p>'+'└ Longitude(Долгота):' + str(jsonGet['lon'])+'</p>'
+    '<p>'+'Timezone: ' +  jsonGet['timezone']+'</p>'
+    '<p>'+'Provaider: ' +  jsonGet['isp']+'</p>'
+    '<p>'+'AS: ' +  jsonGet['as']+'</p>'
+    '<p>'+'Mobile: ' +  str(jsonGet['mobile'])+'</p>'
+    '<p>'+'Proxy: ' +  str(jsonGet['proxy'])+'</p>'
+    '<p>'+'Hosting: ' +  str(jsonGet['hosting'])+'</p>'
+    '<p>'+'Map: ' + 'https://cache.ip-api.com/'+str(jsonGet['lon']) + ',' + str(jsonGet['lat']) +',10' +'</p>'
+)
+		print('\nLink:\nhttps://telegra.ph/{}'.format(response['path']))
+		restartMenu()
+	except KeyError:
+		baseReq = requests.get('http://ip-api.com/json/' + url + '?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query',headers={'User-Agent': UserAgent().firefox},
+			data = {'fields': 'status,message,continent,continentCode,country,'+
+ 				'countryCode,region,regionName,city,district,zip,lat,lon,'+
+ 				'timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query'})
+		jsonGet = json.loads(baseReq.text)
+		ip = jsonGet['query']
+		shodanResult = api.host(ip,history=True) # сам запрос
+		response = telegraph.create_page(
+    str(url),
+    html_content=
+    '<p>'+'\nIP: ' + format(str(shodanResult['ip_str']))+'</p>'+
+    '<p>'+'\nASN: ' + format(str(shodanResult['asn']))+'</p>'+
+    '<p>'+'\nISP: ' + format(str(shodanResult['isp']))+'</p>'+
+    '<p>'+'\nCountry: ' + format(str(shodanResult['country_name']))+'</p>'+
+    '<p>'+'\nCity: ' + format(str(shodanResult['city']))+'</p>'
+    '<p>'+'\nOrganization: ' + format(str(shodanResult['org']))+'</p>'
+    '<p>'+'\nOpen Ports: ' + format(str(shodanResult['ports']))+'</p>'
+    '<p>'+'\nDomains: ' + format(str(shodanResult["data"][0]["domains"]))+'</p>'
+    '<p>'+'\nOS: ' + format(str(shodanResult["data"][0]["os"]))+'</p>'
+    '<p>'+'\nVulns: Not Found'+'</p>'
+    '<p>'+'Coordinates:'+'</p>'
+    '<p>'+'├ Latitude(Широта): ' + str(jsonGet['lat'])+'</p>'
+    '<p>'+'└ Longitude(Долгота):' + str(jsonGet['lon'])+'</p>'
+    '<p>'+'\nTimezone: ' +  jsonGet['timezone']+'</p>'
+    '<p>'+'\nProvaider: ' +  jsonGet['isp']+'</p>'
+    '<p>'+'\nAS: ' +  jsonGet['as']+'</p>'
+    '<p>'+'\nMobile: ' +  str(jsonGet['mobile'])+'</p>'
+    '<p>'+'\nProxy: ' +  str(jsonGet['proxy'])+'</p>'
+    '<p>'+'\nHosting: ' +  str(jsonGet['hosting'])+'</p>'
+    '<p>'+'\nMap: ' + 'https://cache.ip-api.com/'+str(jsonGet['lon']) + ',' + str(jsonGet['lat']) +',10' +'</p>'
+)
+		print('\nLink:\nhttps://telegra.ph/{}'.format(response['path']))
+		restartMenu()
 
 def linkExtract():
 	os.system('clear')
@@ -472,8 +553,6 @@ def pingIP():  # кривой,но рабочий Ping. Работает с по
 '\n' + str(pingJson['nodes']['md1.node.check-host.net'][1]) + ': '+ str(pingJsonResult['md1.node.check-host.net'])+
 '\n' + str(pingJson['nodes']['nl1.node.check-host.net'][1]) + ': '+ str(pingJsonResult['nl1.node.check-host.net'])+
 '\n' + str(pingJson['nodes']['nl2.node.check-host.net'][1]) + ': '+ str(pingJsonResult['nl2.node.check-host.net'])+
-'\n' + str(pingJson['nodes']['ru1.node.check-host.net'][1]) + ': '+ str(pingJsonResult['ru1.node.check-host.net'])+
-'\n' + str(pingJson['nodes']['ru2.node.check-host.net'][1]) + ': '+ str(pingJsonResult['ru2.node.check-host.net'])+
 '\n' + str(pingJson['nodes']['ru3.node.check-host.net'][1]) + ': '+ str(pingJsonResult['ru3.node.check-host.net'])+
 '\n' + str(pingJson['nodes']['se2.node.check-host.net'][1]) + ': '+ str(pingJsonResult['se2.node.check-host.net'])+
 '\n' + str(pingJson['nodes']['ua1.node.check-host.net'][1]) + ': '+ str(pingJsonResult['ua1.node.check-host.net'])+
