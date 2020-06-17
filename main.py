@@ -17,7 +17,7 @@ telegraph.create_account(short_name='Hacker228')
 
 #fW9K4luEx65RscfUiPDakiqp15jiK5f6
 
-#17xz7MYEBoXLPoi8RdqbgkPwTV2T2H0y >>>>>> Shodan keys
+#17xz7MYEBoXLPoi8RdqbgkPwTV2T2H0y >>>>>> Shodan  api keys
 
 #Jvt0B5uZIDPJ5pbCqMo12CqD7pdnMSEd
 
