@@ -141,26 +141,26 @@ def teleMode():
 		response = telegraph.create_page(
     str(url),
     html_content=
-    '<p>'+'IP: ' + format(str(shodanResult['ip_str']))+'</p>'+
-    '<p>'+'ASN: ' + format(str(shodanResult['asn']))+'</p>'+
-    '<p>'+'ISP: ' + format(str(shodanResult['isp']))+'</p>'+
-    '<p>'+'Country: ' + format(str(shodanResult['country_name']))+'</p>'+
-    '<p>'+'City: ' + format(str(shodanResult['city']))+'</p>'
-    '<p>'+'Organization: ' + format(str(shodanResult['org']))+'</p>'
-    '<p>'+'Open Ports: ' + format(str(shodanResult['ports']))+'</p>'
-    '<p>'+'Domains: ' + format(str(shodanResult["data"][0]["domains"]))+'</p>'
-    '<p>'+'OS: ' + format(str(shodanResult["data"][0]["os"]))+'</p>'
-    '<p>'+'Vulns: ' + format(str(shodanResult["vulns"]))+'</p>'
-    '<p>'+'Coordinates:'+'</p>'
-    '<p>'+'├ Latitude(Широта): ' + str(jsonGet['lat'])+'</p>'
-    '<p>'+'└ Longitude(Долгота):' + str(jsonGet['lon'])+'</p>'
-    '<p>'+'Timezone: ' +  jsonGet['timezone']+'</p>'
-    '<p>'+'Provaider: ' +  jsonGet['isp']+'</p>'
-    '<p>'+'AS: ' +  jsonGet['as']+'</p>'
-    '<p>'+'Mobile: ' +  str(jsonGet['mobile'])+'</p>'
-    '<p>'+'Proxy: ' +  str(jsonGet['proxy'])+'</p>'
-    '<p>'+'Hosting: ' +  str(jsonGet['hosting'])+'</p>'
-    '<p>'+'Map: ' + 'https://cache.ip-api.com/'+str(jsonGet['lon']) + ',' + str(jsonGet['lat']) +',10' +'</p>'
+    '<p>'+'<b>IP</b>: ' + format(str(shodanResult['ip_str']))+'</p>'+
+    '<p>'+'<b>ASN: </b>' + format(str(shodanResult['asn']))+'</p>'+
+    '<p>'+'<b>ISP: </b>' + format(str(shodanResult['isp']))+'</p>'+
+    '<p>'+'<b>Country: </b>' + format(str(shodanResult['country_name']))+'</p>'+
+    '<p>'+'<b>City: </b>' + format(str(shodanResult['city']))+'</p>'
+    '<p>'+'<b>Organization: </b>' + format(str(shodanResult['org']))+'</p>'
+    '<p>'+'<b>Open Ports: </b>' + format(str(shodanResult['ports']))+'</p>'
+    '<p>'+'<b>Domains: </b>' + format(str(shodanResult["data"][0]["domains"]))+'</p>'
+    '<p>'+'<b>OS: </b>' + format(str(shodanResult["data"][0]["os"]))+'</p>'
+    '<p>'+'<b>Vulns: </b>' + format(str(shodanResult["vulns"]))+'</p>'
+    '<p>'+'<b>Coordinates:</b>'+'</p>'
+    '<p>'+'<b>├ Latitude(Широта):</b> ' + str(jsonGet['lat'])+'</p>'
+    '<p>'+'<b>└ Longitude(Долгота):</b>' + str(jsonGet['lon'])+'</p>'
+    '<p>'+'<b>Timezone: </b>' +  jsonGet['timezone']+'</p>'
+    '<p>'+'<b>Provaider: </b>' +  jsonGet['isp']+'</p>'
+    '<p>'+'<b>AS: </b>' +  jsonGet['as']+'</p>'
+    '<p>'+'<b>Mobile: </b>' +  str(jsonGet['mobile'])+'</p>'
+    '<p>'+'<b>Proxy: </b>' +  str(jsonGet['proxy'])+'</p>'
+    '<p>'+'<b>Hosting: </b>' +  str(jsonGet['hosting'])+'</p>'
+    '<p>'+'<b>Map: </b>' + '<a href=https://cache.ip-api.com/'+str(jsonGet['lon']) + ',' + str(jsonGet['lat']) +',10' +'>LINK</a></p>'
 )
 		print('\nLink:\nhttps://telegra.ph/{}'.format(response['path']))
 		restartMenu()
@@ -175,26 +175,26 @@ def teleMode():
 		response = telegraph.create_page(
     str(url),
     html_content=
-    '<p>'+'\nIP: ' + format(str(shodanResult['ip_str']))+'</p>'+
-    '<p>'+'\nASN: ' + format(str(shodanResult['asn']))+'</p>'+
-    '<p>'+'\nISP: ' + format(str(shodanResult['isp']))+'</p>'+
-    '<p>'+'\nCountry: ' + format(str(shodanResult['country_name']))+'</p>'+
-    '<p>'+'\nCity: ' + format(str(shodanResult['city']))+'</p>'
-    '<p>'+'\nOrganization: ' + format(str(shodanResult['org']))+'</p>'
-    '<p>'+'\nOpen Ports: ' + format(str(shodanResult['ports']))+'</p>'
-    '<p>'+'\nDomains: ' + format(str(shodanResult["data"][0]["domains"]))+'</p>'
-    '<p>'+'\nOS: ' + format(str(shodanResult["data"][0]["os"]))+'</p>'
-    '<p>'+'\nVulns: Not Found'+'</p>'
-    '<p>'+'Coordinates:'+'</p>'
-    '<p>'+'├ Latitude(Широта): ' + str(jsonGet['lat'])+'</p>'
-    '<p>'+'└ Longitude(Долгота):' + str(jsonGet['lon'])+'</p>'
-    '<p>'+'\nTimezone: ' +  jsonGet['timezone']+'</p>'
-    '<p>'+'\nProvaider: ' +  jsonGet['isp']+'</p>'
-    '<p>'+'\nAS: ' +  jsonGet['as']+'</p>'
-    '<p>'+'\nMobile: ' +  str(jsonGet['mobile'])+'</p>'
-    '<p>'+'\nProxy: ' +  str(jsonGet['proxy'])+'</p>'
-    '<p>'+'\nHosting: ' +  str(jsonGet['hosting'])+'</p>'
-    '<p>'+'\nMap: ' + 'https://cache.ip-api.com/'+str(jsonGet['lon']) + ',' + str(jsonGet['lat']) +',10' +'</p>'
+    '<p>'+'<b>IP</b>: ' + format(str(shodanResult['ip_str']))+'</p>'+
+    '<p>'+'<b>ASN: </b>' + format(str(shodanResult['asn']))+'</p>'+
+    '<p>'+'<b>ISP: </b>' + format(str(shodanResult['isp']))+'</p>'+
+    '<p>'+'<b>Country: </b>' + format(str(shodanResult['country_name']))+'</p>'+
+    '<p>'+'<b>City: </b>' + format(str(shodanResult['city']))+'</p>'
+    '<p>'+'<b>Organization: </b>' + format(str(shodanResult['org']))+'</p>'
+    '<p>'+'<b>Open Ports: </b>' + format(str(shodanResult['ports']))+'</p>'
+    '<p>'+'<b>Domains: </b>' + format(str(shodanResult["data"][0]["domains"]))+'</p>'
+    '<p>'+'<b>OS: </b>' + format(str(shodanResult["data"][0]["os"]))+'</p>'
+    '<p>'+'<b>Vulns:</b> Not Found' +'</p>'
+    '<p>'+'<b>Coordinates:</b>'+'</p>'
+    '<p>'+'<b>├ Latitude(Широта):</b> ' + str(jsonGet['lat'])+'</p>'
+    '<p>'+'<b>└ Longitude(Долгота):</b>' + str(jsonGet['lon'])+'</p>'
+    '<p>'+'<b>Timezone: </b>' +  jsonGet['timezone']+'</p>'
+    '<p>'+'<b>Provaider: </b>' +  jsonGet['isp']+'</p>'
+    '<p>'+'<b>AS: </b>' +  jsonGet['as']+'</p>'
+    '<p>'+'<b>Mobile: </b>' +  str(jsonGet['mobile'])+'</p>'
+    '<p>'+'<b>Proxy: </b>' +  str(jsonGet['proxy'])+'</p>'
+    '<p>'+'<b>Hosting: </b>' +  str(jsonGet['hosting'])+'</p>'
+    '<p>'+'<b>Map: </b>' + '<a href=https://cache.ip-api.com/'+str(jsonGet['lon']) + ',' + str(jsonGet['lat']) +',10' +'>LINK</a></p>'
 )
 		print('\nLink:\nhttps://telegra.ph/{}'.format(response['path']))
 		restartMenu()
