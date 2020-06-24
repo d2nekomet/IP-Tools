@@ -27,11 +27,17 @@ telegraph.create_account(short_name='Hacker228')
 shodanKey = 'PSKINdQe1GyxGgecYz2191H2JoS9qvgD'
 api = shodan.Shodan(shodanKey)
 
-colorNum = ['\033[32m','\033[0m','\033[31m','\033[0m','\033[36m'] # это окраска текста с помощью ANSI
+defaultColor = '\033[0m'
+green = '\033[32m'
+red = '\033[31m'	 # это окраска текста с помощью ANSI
+cyan = '\033[36m'
+
+
+
 def startScript():
 	global url, pingType
 	os.system('clear')
-	print('''\033[36m
+	print(cyan + '''
 ╔═══╗──────────────╔══╦═══╗╔═══╗
 ║╔═╗║──────────────╚╣╠╣╔═╗║║╔═╗║
 ║╚══╦══╦══╦╗╔╦═╦══╗─║║║╚═╝║║╚══╦══╦══╦═╗╔═╗╔══╦═╗
@@ -39,27 +45,27 @@ def startScript():
 ║╚═╝║║═╣╚═╣╚╝║║║║═╣╔╣╠╣║───║╚═╝║╚═╣╔╗║║║║║║║║═╣║
 ╚═══╩══╩══╩══╩╝╚══╝╚══╩╝───╚═══╩══╩╝╚╩╝╚╩╝╚╩══╩╝
 My Project: t.me/www_ptoject
-Author: t.me/os_people\033[0m
-''' + colorNum[0] +'''Menu:\033[0m
-''' + colorNum[0] +'1)'+ colorNum[1] + ' Full scan - Full scan site'
- + colorNum[0] +'\n2)'+ colorNum[1] + ' Base scan - Scan server and delivery of open ports'
- + colorNum[0] +'\n3)'+ colorNum[1] + ' Port scanner - Output ports open and closed'
- + colorNum[0] +'\n4)'+ colorNum[1] + ' Ping - Сhecking integrity and quality of the compound'
- + colorNum[0] +'\n5)'+ colorNum[1] + ' Domain search - Registered Domain Names Search'
- + colorNum[0] +'\n6)'+ colorNum[1] + ' HTTP Headers - Shows the http response header'
- + colorNum[0] +'\n7)'+ colorNum[1] + ' IP to Hostname - Shows the domains linked to the ip'
- + colorNum[0] +'\n8)'+ colorNum[1] + ' Hostname to IP - shows the IP bound to a domain'
- + colorNum[0] +'\n9)'+ colorNum[1] + ' MX Lookup - check MX record of domain'
- + colorNum[0] +'\n10)'+ colorNum[1] + ' Subdomain finder - find subdomains'
- + colorNum[0] +'\n11)'+ colorNum[1] + ' Traceroute - it makes tracing and displays the results'
- + colorNum[0] +'\n12)'+ colorNum[1] + ' Subnet Lookup - calculates subnet boundaries'
- + colorNum[0] +'\n13)'+ colorNum[1] + ' ExtractLink - download all links from site'
- + colorNum[0] +'\n14)'+ colorNum[1] + ' TeleScan - scan and create Telegraph page with info ')
-	print(colorNum[2]+'Other:'+ colorNum[1]
-+colorNum[2]+'\n1a)'+ colorNum[1]+ ' Shodan IP info'
-+colorNum[2]+'\n2a)'+ colorNum[1]+ ' Shodan port scanner'
-+colorNum[2]+'\n3a)'+ colorNum[1]+ ' Shodan DNS domen info'
-+colorNum[2]+'\n4a)'+ colorNum[1]+ ' Shodan scan vulnerability')
+Author: t.me/os_people
+''' + green +'''Menu:
+''' + green +'1)'+ defaultColor + ' Full scan - Full scan site'
+ + green +'\n2)'+ defaultColor + ' Base scan - Scan server and delivery of open ports'
+ + green +'\n3)'+ defaultColor + ' Port scanner - Output ports open and closed'
+ + green +'\n4)'+ defaultColor + ' Ping - Сhecking integrity and quality of the compound'
+ + green +'\n5)'+ defaultColor + ' Domain search - Registered Domain Names Search'
+ + green +'\n6)'+ defaultColor + ' HTTP Headers - Shows the http response header'
+ + green +'\n7)'+ defaultColor + ' IP to Hostname - Shows the domains linked to the ip'
+ + green +'\n8)'+ defaultColor + ' Hostname to IP - shows the IP bound to a domain'
+ + green +'\n9)'+ defaultColor + ' MX Lookup - check MX record of domain'
+ + green +'\n10)'+ defaultColor + ' Subdomain finder - find subdomains'
+ + green +'\n11)'+ defaultColor + ' Traceroute - it makes tracing and displays the results'
+ + green +'\n12)'+ defaultColor + ' Subnet Lookup - calculates subnet boundaries'
+ + green +'\n13)'+ defaultColor + ' ExtractLink - download all links from site'
+ + green +'\n14)'+ defaultColor + ' TeleScan - scan and create Telegraph page with info ')
+	print(red+'Other:'+ defaultColor
++red+'\n1a)'+ defaultColor+ ' Shodan IP info'
++red+'\n2a)'+ defaultColor+ ' Shodan port scanner'
++red+'\n3a)'+ defaultColor+ ' Shodan DNS domen info'
++red+'\n4a)'+ defaultColor+ ' Shodan scan vulnerability')
 	selectMode = input('Выберите нужный вариант (Select an option):')
 	print('Выбран режим ' + selectMode + '!')
 	time.sleep(1)
@@ -245,10 +251,27 @@ def shodanVulnScan():
 		ip = jsonIPGetter['query']
 		shodanResult = api.host(ip,history=True)
 		os.system('clear')
-		print('\nVulns: '+ format(str(shodanResult["vulns"])))
-		restartMenu()
+		print('\nVulns: '+ format(str(shodanResult["vulns"])))	
+		print(green+'''\nShow information about the vulnerability?'''+defaultColor)
+		selectVuln = input(green+'Enter y/n: '+defaultColor)
+		if selectVuln == 'y' or selectVuln =='Y' or selectVuln =='д' or selectVuln =='Д':
+			cvenum = 0
+			while True:
+				print('\n-----------------'+
+				green +'\nCVE: ' + format(str(shodanResult["vulns"][cvenum]))+
+				cyan+'\nLink: https://www.exploit-db.com/search?cve=' + format(str(shodanResult["vulns"][cvenum]))+
+				'\nLink: https://www.cvedetails.com/cve/'+format(str(shodanResult["vulns"][cvenum]))+
+				'\nLink: https://cve.mitre.org/cgi-bin/cvename.cgi?name='+format(str(shodanResult["vulns"][cvenum]))+
+				'\nLink: https://nvd.nist.gov/vuln/detail/'+format(str(shodanResult["vulns"][cvenum]))+defaultColor)
+				cvenum += 1
+			pass
+		else:
+			startScript()
 	except KeyError:
 		print('Not Found!')
+	except IndexError:
+		print('\nFINISH!')
+		restartMenu()
 
 def shodanDNSScan():
 	try:
@@ -281,12 +304,14 @@ def shodanPortScan():
 		jsonIPGetter = json.loads(ipGetter.text)
 		ip = jsonIPGetter['query']
 		shodanResult = api.host(ip)
-		print('\nOpen Ports: ' + format(str(shodanResult['ports'])))
 		portNum = 1
 		while 9999 > portNum:
-			print('\nInfo: ' + format(str(shodanResult["data"][portNum]["_shodan"])))
+			print('\n---------------: '+
+					'\nService: ' + format(str(shodanResult["data"][portNum]["_shodan"]['module']))+
+					'\nPtr: ' + format(str(shodanResult["data"][portNum]["_shodan"]['ptr'])))
 			portNum += 1
 	except IndexError:
+		print('\nOpen Ports: ' + format(str(shodanResult['ports'])))
 		print('\nFINISH!')
 		restartMenu()
 	except shodan.APIError as e:
@@ -316,19 +341,33 @@ def shodanFunc(): # функция с поиском инфы по Shodan
 		'\nVulns: ' + format(str(shodanResult["vulns"])))
 		#info = api.host(ip, history=True)
 		#print(info)
-		shodanSelect = input('''
-1) Информация про порты
-2) Выйти в меню
-3) Выйти
-Выберите нужный вариант: ''')
+		shodanSelect = input(green+'''Menu:
+1)'''+defaultColor+'''Информация про порты (Information about ports)'''
++green+'\n2)'+defaultColor +'''Информация про уязвимости (Information about the vulnerability)'''
++green+'\n3)'+defaultColor+'''Выйти в меню (To exit the menu)'''
++green+'\n4)'+defaultColor+ '''Выйти (Exit)'''
++'''\nВыберите нужный вариант (Select an option): ''')
 		if shodanSelect == '1':
 			portNum = 1
+			os.system('clear')
 			while 9999 > portNum:
-				print('\nInfo: ' + format(str(shodanResult["data"][portNum]["_shodan"])))
+				print('\n---------------: '+
+					'\nService: ' + format(str(shodanResult["data"][portNum]["_shodan"]['module']))+
+					'\nPtr: ' + format(str(shodanResult["data"][portNum]["_shodan"]['ptr'])))
 				portNum += 1
 		elif shodanSelect == '2':
-			startScript()
+			cvenum = 0
+			while True:
+				print('\n-----------------'+
+				green +'\nCVE: ' + format(str(shodanResult["vulns"][cvenum]))+
+				cyan+'\nLink: https://www.exploit-db.com/search?cve=' + format(str(shodanResult["vulns"][cvenum]))+
+				'\nLink: https://www.cvedetails.com/cve/'+format(str(shodanResult["vulns"][cvenum]))+
+				'\nLink: https://cve.mitre.org/cgi-bin/cvename.cgi?name='+format(str(shodanResult["vulns"][cvenum]))+
+				'\nLink: https://nvd.nist.gov/vuln/detail/'+format(str(shodanResult["vulns"][cvenum]))+defaultColor)
+				cvenum += 1
 		elif shodanSelect == '3':
+			startScript()
+		elif shodanSelect == '4':
 			print('Exit...')
 	except KeyError:
 				print('\nIP: ' + format(str(shodanResult['ip_str']))+
