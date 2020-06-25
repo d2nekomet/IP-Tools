@@ -65,71 +65,123 @@ Author: t.me/os_people
 +red+'\n1a)'+ defaultColor+ ' Shodan IP info'
 +red+'\n2a)'+ defaultColor+ ' Shodan port scanner'
 +red+'\n3a)'+ defaultColor+ ' Shodan DNS domen info'
-+red+'\n4a)'+ defaultColor+ ' Shodan scan vulnerability')
++red+'\n4a)'+ defaultColor+ ' Shodan scan vulnerability'
++red+'\n5a)'+ defaultColor+ ' Shodan search')
 	selectMode = input('Выберите нужный вариант (Select an option):')
 	print('Выбран режим ' + selectMode + '!')
 	time.sleep(1)
 	os.system('clear')
 	if selectMode == '1':
-		url = input('Введи IP или домен сайта(не URL!): ')
+		url = input('Введи IP или домен сайта(Enter the IP or domain of the website): ')
 		fullScan()
 	elif selectMode == '2':
-		url = input('Введи IP или домен сайта(не URL!): ')
+		url = input('Введи IP или домен сайта(Enter the IP or domain of the website): ')
 		baseScan()
 	elif selectMode == '3':
-		url = input('Введи IP или домен сайта(не URL!): ')
+		url = input('Введи IP или домен сайта(Enter the IP or domain of the website): ')
 		portFunc()
 		restartMenu()
 	elif selectMode == '4':
-		url = input('Введи IP или домен сайта(не URL!): ')
+		url = input('Введи IP или домен сайта(Enter the IP or domain of the website): ')
 		checkPingType()
 	elif selectMode == '5':
-		url = input('Введите домен: ')
+		url = input('Введите домен(Enter the domain): ')
 		regDomainSearch()
 	elif selectMode == '6':
-		url = input('Введите домен: ')
+		url = input('Введите домен(Enter the domain): ')
 		headReq()
 	elif selectMode == '7':
-		url = input('Введите IP: ')
+		url = input('Введите IP: (Enter the IP)')
 		IpToHost()
 	elif selectMode == '8':
-		url = input('Введите домен: ')
+		url = input('Введите домен(Enter the domain): ')
 		HostToIp()
 	elif selectMode == '9':
-		url = input('Введите домен: ')
+		url = input('Введите домен(Enter the domain): ')
 		MXLookup()	
 	elif selectMode == '10':
-		url = input('Введи IP или домен сайта(не URL!): ')
+		url = input('Введи IP или домен сайта(Enter the IP or domain of the website): ')
 		subdominFunc()
 	elif selectMode == '11':
-		url = input('Введи IP или домен сайта(не URL!): ')
+		url = input('Введи IP или домен сайта(Enter the IP or domain of the website): ')
 		tracerouteFunc()
 	elif selectMode == '12':
-		url = input('Введи IP или домен сайта(не URL!): ')
+		url = input('Введи IP или домен сайта(Enter the IP or domain of the website): ')
 		subnetFunc()
 	elif selectMode == '13':
-		url = input('Введи домен сайта(не URL!): ')
+		url = input('Введите домен(Enter the domain): ')
 		linkExtract()
 	elif selectMode == '14':
-		url = input('Введи IP или домен сайта(не URL!): ')
+		url = input('Введи IP или домен сайта(Enter the IP or domain of the website): ')
 		teleMode()
 	elif selectMode == '1a':
-		url = input('Введите IP или домен: ')
+		url = input('Введите IP или домен(Enter IP or domain): ')
 		shodanFunc()
 	elif selectMode == '2a':
-		url = input('Введите IP или домен: ')
+		url = input('Введите IP или домен(Enter IP or domain): ')
 		shodanPortScan()
 	elif selectMode == '3a':
-		url = input('Введите IP или домен: ')
+		url = input('Введите IP или домен(Enter IP or domain): ')
 		shodanDNSScan()
 	elif selectMode == '4a':
-		url = input('Введите IP или домен: ')
+		url = input('Введите IP или домен(Enter IP or domain): ')
 		shodanVulnScan()
+	elif selectMode == '5a':
+		url = input('Введите запрос(enter the query): ')
+		shodanSearch()
 	else:
 		print('Введено не верное значение!')
 		time.sleep(1)
 		startScript()
 
+
+def shodanSearch():
+	try:
+		result = requests.get('https://api.shodan.io/shodan/host/search?key='+shodanKey+'&query='+url)
+		resultText = json.loads(result.text)
+		resultFile = open('result.txt','w+')
+		resultNum = 0
+		while True:
+			resultFile.write('\nResult '+str(resultNum)+':\n'+ 
+				'\nPort: '+str(resultText['matches'][resultNum]['port'])+
+				'\nIP: '+ str(resultText['matches'][resultNum]['ip_str'])+
+				'\nDomains: '+ str(resultText['matches'][resultNum]['domains'])+
+				'\nOrganization: '+ str(resultText['matches'][resultNum]['org'])+
+				'\nTransport protocol: '+ str(resultText['matches'][resultNum]['transport'])+
+				'\nLocation: '+ 
+				'\n ├Latitude(Широта): ' + str(resultText['matches'][resultNum]['location']['latitude'])+
+				'\n └Longitude(Долгота): ' + str(resultText['matches'][resultNum]['location']['longitude'])+
+				'\n-----------------------\n')
+			resultNum += 1
+	except shodan.APIError:
+		print('\nShodan выдал ошибку. Попробуйте позже или проверьте правильность введенных данных!'+
+			'\nShodan gave the error. Please try later or check your entries!')
+		restartMenu()
+	except IndexError:
+		print('\nFINISH!\n'+
+			'Откройте файл result.txt с содержанием ответа Shodan.\n'+
+			'Open the file result.txt the contents of the reply Shodan.')
+		resultFile.close()
+		resultNum = 0
+		restartMenu()
+	except KeyError:
+		resultFile.write(result.text)
+		print('\nFINISH!\n'+
+			'Откройте файл result.txt с содержанием ответа Shodan.\n'+
+			'Open the file result.txt the contents of the reply Shodan.')
+		resultFile.write('\nResult '+str(resultNum)+':\n'+ 
+			'\nPort: '+str(resultText['matches'][resultNum]['port'])+
+			'\nIP: '+ str(resultText['matches'][resultNum]['ip_str'])+
+			'\nDomains: '+ str(resultText['matches'][resultNum]['domains'])+
+			'\nOrganization: '+ str(resultText['matches'][resultNum]['org'])+
+			'\nTransport protocol: '+ str(resultText['matches'][resultNum]['transport'])+
+			'\nLocation: '+ 
+			'\n ├Latitude(Широта): ' + str(resultText['matches'][resultNum]['location']['latitude'])+
+			'\n └Longitude(Долгота): ' + str(resultText['matches'][resultNum]['location']['longitude'])+
+			'\n-----------------------\n')
+		resultFile.close()
+		resultNum = 0
+		restartMenu()
 
 def teleMode():
 	try:
@@ -519,6 +571,12 @@ def infoScan():
 '\nИх меньше из-за ошибки')
 
 def portFunc():
+	portReq = requests.get('https://www.4it.me/api/checkports?host=' + url + 
+		'&ports=20%2C22%2C21%20%2C23%20%2C25%20%2C53%20%2C80%20%2C110%20%2C139%20%2C8000%20%2C8080%20%2C3128%20%2C3389%20%2C6588%2C1080%2C5900%2C8888',
+		headers={'User-Agent': UserAgent().firefox}, 
+		data={'host' : str(url)} and
+		{'ports' : '20,22,21 ,23 ,25 ,53 ,80 ,110 ,139 ,8000 ,8080 ,3128 ,3389 ,6588,1080,5900,8888'})
+	time.sleep(0.5)
 	portReq = requests.get('https://www.4it.me/api/checkports?host=' + url + 
 		'&ports=20%2C22%2C21%20%2C23%20%2C25%20%2C53%20%2C80%20%2C110%20%2C139%20%2C8000%20%2C8080%20%2C3128%20%2C3389%20%2C6588%2C1080%2C5900%2C8888',
 		headers={'User-Agent': UserAgent().firefox}, 
