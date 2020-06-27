@@ -1,5 +1,4 @@
 import requests
-from fake_useragent import UserAgent
 from requests.exceptions import HTTPError
 import os
 import json
@@ -32,7 +31,9 @@ green = '\033[32m'
 red = '\033[31m'	 # это окраска текста с помощью ANSI
 cyan = '\033[36m'
 
-
+firefoxUserAgent = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:21.0) Gecko/20100101 Firefox/21.0'
+chromeUserAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.137 Safari/4E423F'
+operaUserAgent = 'Opera/9.80 (Windows NT 6.1; U; zh-tw) Presto/2.7.62 Version/11.01'
 
 def startScript():
 	global url, pingType
@@ -150,7 +151,8 @@ def shodanSearch():
 				'\nTransport protocol: '+ str(resultText['matches'][resultNum]['transport'])+
 				'\nLocation: '+ 
 				'\n ├Latitude(Широта): ' + str(resultText['matches'][resultNum]['location']['latitude'])+
-				'\n └Longitude(Долгота): ' + str(resultText['matches'][resultNum]['location']['longitude'])+
+				'\n ├Longitude(Долгота): ' + str(resultText['matches'][resultNum]['location']['longitude'])+
+				'\n └Country: ' + str(resultText['matches'][resultNum]['location']['country_name'])+'('+str(resultText['matches'][resultNum]['location']['city'])+')'+
 				'\n-----------------------\n')
 			resultNum += 1
 	except shodan.APIError:
@@ -177,7 +179,8 @@ def shodanSearch():
 			'\nTransport protocol: '+ str(resultText['matches'][resultNum]['transport'])+
 			'\nLocation: '+ 
 			'\n ├Latitude(Широта): ' + str(resultText['matches'][resultNum]['location']['latitude'])+
-			'\n └Longitude(Долгота): ' + str(resultText['matches'][resultNum]['location']['longitude'])+
+			'\n ├Longitude(Долгота): ' + str(resultText['matches'][resultNum]['location']['longitude'])+
+			'\n └Country: ' + str(resultText['matches'][resultNum]['location']['country_name'])+'('+str(resultText['matches'][resultNum]['location']['city'])+')'+
 			'\n-----------------------\n')
 		resultFile.close()
 		resultNum = 0
@@ -185,7 +188,7 @@ def shodanSearch():
 
 def teleMode():
 	try:
-		baseReq = requests.get('http://ip-api.com/json/' + url + '?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query',headers={'User-Agent': UserAgent().firefox},
+		baseReq = requests.get('http://ip-api.com/json/' + url + '?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query',headers={'User-Agent': firefoxUserAgent},
 			data = {'fields': 'status,message,continent,continentCode,country,'+
  				'countryCode,region,regionName,city,district,zip,lat,lon,'+
  				'timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query'})
@@ -223,7 +226,7 @@ def teleMode():
 		print('\nLink:\nhttps://telegra.ph/{}'.format(response['path']))
 		restartMenu()
 	except KeyError:
-		baseReq = requests.get('http://ip-api.com/json/' + url + '?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query',headers={'User-Agent': UserAgent().firefox},
+		baseReq = requests.get('http://ip-api.com/json/' + url + '?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query',headers={'User-Agent': firefoxUserAgent},
 			data = {'fields': 'status,message,continent,continentCode,country,'+
  				'countryCode,region,regionName,city,district,zip,lat,lon,'+
  				'timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query'})
@@ -297,7 +300,7 @@ def restartMenu():
 def shodanVulnScan():
 	try:
 		ipGetter = requests.get('http://ip-api.com/json/' + url + '?fields=query',
-			headers={'User-Agent': UserAgent().firefox},
+			headers={'User-Agent': firefoxUserAgent},
 			data = {'fields': 'query'})
 		jsonIPGetter = json.loads(ipGetter.text)
 		ip = jsonIPGetter['query']
@@ -329,7 +332,7 @@ def shodanDNSScan():
 	try:
 		os.system('clear')
 		shodanDNSReq = requests.get('https://api.shodan.io/dns/domain/' + url + '?key='+shodanKey,
-			headers={'User-Agent': UserAgent().firefox})
+			headers={'User-Agent': firefoxUserAgent})
 		shodanDNSJson = json.loads(shodanDNSReq.text)
 		dnsData = 0
 		dnsSubData = 0
@@ -351,7 +354,7 @@ def shodanPortScan():
 	try:
 		os.system('clear')
 		ipGetter = requests.get('http://ip-api.com/json/' + url + '?fields=query',
-			headers={'User-Agent': UserAgent().firefox},
+			headers={'User-Agent': firefoxUserAgent},
 			data = {'fields': 'query'})
 		jsonIPGetter = json.loads(ipGetter.text)
 		ip = jsonIPGetter['query']
@@ -375,7 +378,7 @@ def shodanFunc(): # функция с поиском инфы по Shodan
 	try:
 		os.system('clear')
 		ipGetter = requests.get('http://ip-api.com/json/' + url + '?fields=query', # тут мы узнаем ip домена (если ввели ip)
-			headers={'User-Agent': UserAgent().firefox},
+			headers={'User-Agent': firefoxUserAgent},
 			data = {'fields': 'query'})
 		jsonIPGetter = json.loads(ipGetter.text)
 		ip = jsonIPGetter['query']
@@ -447,7 +450,7 @@ def MXLookup():
 	try:
 		os.system('clear')
 		MXLookupReq = requests.post('https://codebeautify.org/iptools/mxLookup', # запрос на MXlookup
-		headers={'User-Agent': UserAgent().firefox}, 
+		headers={'User-Agent': firefoxUserAgent}, 
 		data={'domain':url})
 		MXLookupJson = json.loads(MXLookupReq.text)
 		targetList = 0
@@ -465,7 +468,7 @@ def MXLookup():
 def HostToIp():
 	os.system('clear')
 	HostToIpReq = requests.post('https://codebeautify.org/iptools/hostNameToIP',
-	headers={'User-Agent': UserAgent().firefox}, 
+	headers={'User-Agent': firefoxUserAgent}, 
 	data={'domain':url})
 	HostToIPJson = json.loads(HostToIpReq.text)
 	print('\nHost: ' + url + 
@@ -479,7 +482,7 @@ def HostToIp():
 def IpToHost():
 	os.system('clear')
 	ipToHostReq = requests.post('https://codebeautify.org/iptools/ipToHostname',
-	headers={'User-Agent': UserAgent().firefox}, 
+	headers={'User-Agent': firefoxUserAgent}, 
 	data={'domain':url})
 	ipToHostJson = json.loads(ipToHostReq.text)
 	print('\nIP: ' + url + 
@@ -489,7 +492,7 @@ def IpToHost():
 def headReq():
 	os.system('clear')
 	ipInfoReq = requests.get('https://www.4it.me/api/getavaiblestatus?query=' + url,
-	headers={'User-Agent': UserAgent().firefox}, 
+	headers={'User-Agent': firefoxUserAgent}, 
 	data={'query' : str(url)})
 	# ipInfoReq выдает инфу о сервере
 	ipInfoJson = json.loads(ipInfoReq.text)
@@ -531,13 +534,13 @@ def checkPingType():
 		startScript()
 
 def whoisFunc():
-	whoisReq = requests.post('https://check-host.net/ip-info/whois',headers={'User-Agent': UserAgent().firefox}, data={'host':str(url)})
+	whoisReq = requests.post('https://check-host.net/ip-info/whois',headers={'User-Agent': firefoxUserAgent}, data={'host':str(url)})
 		# whoisReq делает запрос на получение базовой информации о домене.
 	print('\nДанные №1: \n' +str(whoisReq.text))
 
 def infoScan():
 	try:
-		baseReq = requests.get('http://ip-api.com/json/' + url + '?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query',headers={'User-Agent': UserAgent().firefox},
+		baseReq = requests.get('http://ip-api.com/json/' + url + '?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query',headers={'User-Agent': firefoxUserAgent},
 		 data = {'fields': 'status,message,continent,continentCode,country,'+
  			'countryCode,region,regionName,city,district,zip,lat,lon,'+
  			'timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query'})
@@ -573,13 +576,13 @@ def infoScan():
 def portFunc():
 	portReq = requests.get('https://www.4it.me/api/checkports?host=' + url + 
 		'&ports=20%2C22%2C21%20%2C23%20%2C25%20%2C53%20%2C80%20%2C110%20%2C139%20%2C8000%20%2C8080%20%2C3128%20%2C3389%20%2C6588%2C1080%2C5900%2C8888',
-		headers={'User-Agent': UserAgent().firefox}, 
+		headers={'User-Agent': firefoxUserAgent}, 
 		data={'host' : str(url)} and
 		{'ports' : '20,22,21 ,23 ,25 ,53 ,80 ,110 ,139 ,8000 ,8080 ,3128 ,3389 ,6588,1080,5900,8888'})
-	time.sleep(0.5)
+	time.sleep(1	)
 	portReq = requests.get('https://www.4it.me/api/checkports?host=' + url + 
 		'&ports=20%2C22%2C21%20%2C23%20%2C25%20%2C53%20%2C80%20%2C110%20%2C139%20%2C8000%20%2C8080%20%2C3128%20%2C3389%20%2C6588%2C1080%2C5900%2C8888',
-		headers={'User-Agent': UserAgent().firefox}, 
+		headers={'User-Agent': firefoxUserAgent}, 
 		data={'host' : str(url)} and
 		{'ports' : '20,22,21 ,23 ,25 ,53 ,80 ,110 ,139 ,8000 ,8080 ,3128 ,3389 ,6588,1080,5900,8888'})
 	# portReq делает запрос на сканирование портов IP
@@ -605,7 +608,7 @@ def portFunc():
 
 def headersFunc():
 	ipInfoReq = requests.get('https://www.4it.me/api/getavaiblestatus?query=' + url,
-		headers={'User-Agent': UserAgent().firefox}, 
+		headers={'User-Agent': firefoxUserAgent}, 
 		data={'query' : str(url)})
 		# ipInfoReq выдает инфу о сервере
 	print('\nСервер: ' + str(ipInfoJson['headers']['server']) +
