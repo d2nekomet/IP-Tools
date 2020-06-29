@@ -6,6 +6,9 @@ import time
 import json
 import shodan
 from telegraph import Telegraph
+import socket
+import socks
+
 telegraph = Telegraph()
 telegraph.create_account(short_name='Hacker228')
 
@@ -39,12 +42,12 @@ def startScript():
 	global url, pingType
 	os.system('clear')
 	print(cyan + '''
-╔═══╗──────────────╔══╦═══╗╔═══╗
-║╔═╗║──────────────╚╣╠╣╔═╗║║╔═╗║
-║╚══╦══╦══╦╗╔╦═╦══╗─║║║╚═╝║║╚══╦══╦══╦═╗╔═╗╔══╦═╗
-╚══╗║║═╣╔═╣║║║╔╣║═╣─║║║╔══╝╚══╗║╔═╣╔╗║╔╗╣╔╗╣║═╣╔╝
-║╚═╝║║═╣╚═╣╚╝║║║║═╣╔╣╠╣║───║╚═╝║╚═╣╔╗║║║║║║║║═╣║
-╚═══╩══╩══╩══╩╝╚══╝╚══╩╝───╚═══╩══╩╝╚╩╝╚╩╝╚╩══╩╝
+╔══╦═══╦════╗────╔╗
+╚╣╠╣╔═╗║╔╗╔╗║────║║
+─║║║╚═╝╠╝║║╠╩═╦══╣║╔══╗
+─║║║╔══╝─║║║╔╗║╔╗║║║══╣
+╔╣╠╣║────║║║╚╝║╚╝║╚╬══║
+╚══╩╝────╚╝╚══╩══╩═╩══╝
 My Project: t.me/www_ptoject
 Author: t.me/os_people
 ''' + green +'''Menu:
@@ -61,7 +64,8 @@ Author: t.me/os_people
  + green +'\n11)'+ defaultColor + ' Traceroute - it makes tracing and displays the results'
  + green +'\n12)'+ defaultColor + ' Subnet Lookup - calculates subnet boundaries'
  + green +'\n13)'+ defaultColor + ' ExtractLink - download all links from site'
- + green +'\n14)'+ defaultColor + ' TeleScan - scan and create Telegraph page with info ')
+ + green +'\n14)'+ defaultColor + ' TeleScan - scan and create Telegraph page with info '
+ + green +'\n15)'+ defaultColor + ' Proxy Finder - find proxy server')
 	print(red+'Other:'+ defaultColor
 +red+'\n1a)'+ defaultColor+ ' Shodan IP info'
 +red+'\n2a)'+ defaultColor+ ' Shodan port scanner'
@@ -115,6 +119,10 @@ Author: t.me/os_people
 	elif selectMode == '14':
 		url = input('Введи IP или домен сайта(Enter the IP or domain of the website): ')
 		teleMode()
+	elif selectMode == '15':
+		proxyFinder()
+	elif selectMode == 'debug':
+		proxyOne()
 	elif selectMode == '1a':
 		url = input('Введите IP или домен(Enter IP or domain): ')
 		shodanFunc()
@@ -134,6 +142,28 @@ Author: t.me/os_people
 		print('Введено не верное значение!')
 		time.sleep(1)
 		startScript()
+
+def proxyFinder():
+	country = input('Введите код страны(Enter the country code): ')
+	typeProxy = input('Введите тип прокси(Enter the proxy type): ')
+	proxyReq = requests.get('https://www.proxy-list.download/api/v1/get?type='+typeProxy+'&anon=elite&country='+country)
+	proxyReq2 = requests.get('https://www.proxy-list.download/api/v1/get?type='+typeProxy+'&anon=transparent&country='+country)
+	proxyReq3 = requests.get('https://www.proxy-list.download/api/v1/get?type='+typeProxy+'&anon=anonymous&country='+country)
+	otherEliteReq = requests.get(' https://api.proxyscrape.com?request=displayproxies&proxytype='+typeProxy
+		+'&timeout=7000&country='+country+'&anonymity=elite&ssl=no')
+	
+	otherTransparentReq2 = requests.get(' https://api.proxyscrape.com?request=displayproxies&proxytype='+typeProxy
+		+'&timeout=7000&country='+country+'&anonymity=transparent&ssl=no')
+	
+	otherAnonymousReq3 = requests.get(' https://api.proxyscrape.com?request=displayproxies&proxytype='+typeProxy
+		+'&timeout=7000&country='+country+'&anonymity=anonymous&ssl=no')
+	
+	print('Result: \n' +
+		'\nElite anon: \n'+ proxyReq.text + otherEliteReq.text +
+		'\nTransparent anon: \n ' + proxyReq2.text+ otherTransparentReq2.text + 
+		'\nAnonymous anon: \n ' + proxyReq3.text + otherAnonymousReq3.text +
+		'\nFINISH!')
+	restartMenu()
 
 
 def shodanSearch():
@@ -607,15 +637,19 @@ def portFunc():
 '\nNewsEDGE(8888 PORT): ' + portJson['8888'])
 
 def headersFunc():
-	ipInfoReq = requests.get('https://www.4it.me/api/getavaiblestatus?query=' + url,
-		headers={'User-Agent': firefoxUserAgent}, 
-		data={'query' : str(url)})
-		# ipInfoReq выдает инфу о сервере
-	print('\nСервер: ' + str(ipInfoJson['headers']['server']) +
-'\nДата: ' + str(ipInfoJson['headers']['date']) + 
-'\nСоединение: ' + str(ipInfoJson['headers']['connection']))
-
+	try:
+		ipInfoReq = requests.get('https://www.4it.me/api/getavaiblestatus?query=' + url,
+			headers={'User-Agent': firefoxUserAgent}, 
+			data={'query' : str(url)})
+			# ipInfoReq выдает инфу о сервере
+		print('\nСервер: ' + str(ipInfoJson['headers']['server']) +
+	'\nДата: ' + str(ipInfoJson['headers']['date']) + 
+	'\nСоединение: ' + str(ipInfoJson['headers']['connection']))
+	except KeyError:
+		print('Ошибка Соединения!\n'+
+			'connection Error!')
 def fullScan():
+	os.system('clear')
 	whoisFunc()
 	infoScan()
 	portFunc()
@@ -660,6 +694,5 @@ def pingIP():  # кривой,но рабочий Ping. Работает с по
 '\n' + str(pingJson['nodes']['us4.node.check-host.net'][1]) + ': '+ str(pingJsonResult['us4.node.check-host.net']))
 	#print(pingReq.text)
 	restartMenu()
-
 
 startScript()

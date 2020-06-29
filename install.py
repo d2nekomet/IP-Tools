@@ -1,7 +1,7 @@
 import os
 import time
 
-colorNum = ['\033[32m','\033[0m','\033[31m','\033[0m','\033[36m'] # это окраска текста с помощью ANSI code
+colorNum = ['\033[32m','\033[0m','\033[31m','\033[0m','\033[36m'] # это окраска текста с помощью ANSI
 
 def startInstall():
 	os.system('clear')
