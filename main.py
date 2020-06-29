@@ -9,7 +9,7 @@ from telegraph import Telegraph
 
 
 telegraph = Telegraph()
-telegraph.create_account(short_name='Hacker228')
+
 
 # ---------------------------
 #61TvA2dNwxNxmWziZxKzR5aO9tFD00Nj
@@ -217,6 +217,7 @@ def shodanSearch():
 
 def teleMode():
 	try:
+		telegraph.create_account(short_name='Hacker228')
 		baseReq = requests.get('http://ip-api.com/json/' + url + '?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query',headers={'User-Agent': firefoxUserAgent},
 			data = {'fields': 'status,message,continent,continentCode,country,'+
  				'countryCode,region,regionName,city,district,zip,lat,lon,'+
@@ -255,6 +256,7 @@ def teleMode():
 		print('\nLink:\nhttps://telegra.ph/{}'.format(response['path']))
 		restartMenu()
 	except KeyError:
+		telegraph.create_account(short_name='Hacker228')
 		baseReq = requests.get('http://ip-api.com/json/' + url + '?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query',headers={'User-Agent': firefoxUserAgent},
 			data = {'fields': 'status,message,continent,continentCode,country,'+
  				'countryCode,region,regionName,city,district,zip,lat,lon,'+
