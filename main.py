@@ -6,8 +6,7 @@ import time
 import json
 import shodan
 from telegraph import Telegraph
-import socket
-import socks
+
 
 telegraph = Telegraph()
 telegraph.create_account(short_name='Hacker228')
