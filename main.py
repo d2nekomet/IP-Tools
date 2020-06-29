@@ -47,7 +47,7 @@ def startScript():
 ─║║║╔══╝─║║║╔╗║╔╗║║║══╣
 ╔╣╠╣║────║║║╚╝║╚╝║╚╬══║
 ╚══╩╝────╚╝╚══╩══╩═╩══╝
-My Project: t.me/www_ptoject
+My Project: t.me/www_project
 Author: t.me/os_people
 ''' + green +'''Menu:
 ''' + green +'1)'+ defaultColor + ' Full scan - Full scan site'
