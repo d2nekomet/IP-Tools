@@ -13,7 +13,7 @@ def startInstall():
 ╭┫┣┫┃╱┃┃┃╰━╯┃╱┃┃╱┃╭━╮┃╰━╯┃╰━╯┃
 ╰━━┻╯╱╰━┻━━━╯╱╰╯╱╰╯╱╰┻━━━┻━━━╯
 Author: t.me/os_people
-My Project: t.me/www_ptoject
+My Project: t.me/www_project
 '''+colorNum[0] +'''Меню:
 '''+colorNum[0]+'''1)'''+colorNum[1]+''' Debina (Ubuntu) install
 '''+colorNum[0]+'''2)'''+colorNum[1]+''' Termux install
@@ -25,7 +25,6 @@ My Project: t.me/www_ptoject
 			'The installation began')
 		os.system('sudo apt install python3-pip -y')
 		os.system('pip3 install requests')
-		os.system('pip3 install telegraph')
 		os.system('pip3 install shodan')
 		os.system('clear')
 		print('Чтобы запустить скрипт напишите python3 main.py\n'+
@@ -36,7 +35,6 @@ My Project: t.me/www_ptoject
 			'The installation began')
 		os.system('pip3 install requests')
 		os.system('pip3 install shodan')
-		os.system('pip3 install telegraph')
 		os.system('clear')
 		print('Чтобы запустить скрипт напишите python3 main.py')
 	elif selectMode == '3':
@@ -46,11 +44,10 @@ My Project: t.me/www_ptoject
 1) sudo apt install python3-pip
 2) pip3 install requests
 3) pip3 install shodan
-4) pip3 install telegraph
 Для Termux:
 1) pip3 install requests
 2) pip3 install shodan
-3) pip3 install telegraph
+
 ''')
 
 startInstall()
